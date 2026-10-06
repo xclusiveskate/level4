@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:level4/database/note_ui.dart';
-// import 'package:level4/localstorage/local_storage.dart';
-import 'package:level4/localstorage/user_ui.dart';
+import 'package:level4/state_management/getx/getx_ui.dart';
+import 'package:level4/state_management/provider/provider_ui.dart';
+import 'package:level4/state_management/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,11 +21,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const NoteUi(),
+      home: const GetxUi(),
     );
   }
 }

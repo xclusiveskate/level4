@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:level4/database/data.dart';
 import 'package:level4/database/logic.dart';
 import 'package:level4/database/note_screen.dart';
@@ -13,6 +13,8 @@ class NoteUi extends StatefulWidget {
 
 class _NoteUiState extends State<NoteUi> {
   late Future<List<Notes>> notesFuture;
+
+  bool isListView = true;
   void getNotes() async {
     notesFuture = DatabaseHelper.readNotes();
     setState(() {});
@@ -28,7 +30,20 @@ class _NoteUiState extends State<NoteUi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Note App"), centerTitle: true),
+      appBar: AppBar(
+        title: Text("Note App"),
+        centerTitle: true,
+        actions: [
+          Switch(
+            value: isListView,
+            onChanged: (value) {
+              isListView = value;
+              setState(() {});
+              print(isListView);
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder<List<Notes>?>(
         future: notesFuture,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -39,59 +54,95 @@ class _NoteUiState extends State<NoteUi> {
           } else if (snapshot.hasData && snapshot.data!.isEmpty) {
             return Center(child: Text("Add new note to get started"));
           }
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              Notes note = snapshot.data[index];
-              return ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NoteScreen(notes: note),
-                    ),
-                  ).then((value) {
-                    getNotes();
-                  });
-                },
-                tileColor: Colors.lightGreen.shade800,
-                title: Text(note.title),
-                subtitle: Text(note.content),
-                onLongPress: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("Do you want to delete this note"),
-                        actions: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("Cancel"),
+          return isListView
+              ? ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    Notes note = snapshot.data[index];
+                    return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NoteScreen(notes: note),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              DatabaseHelper.deleteNote(note.id!).then((value) {
-                                getNotes();
-                              });
+                        ).then((value) {
+                          getNotes();
+                        });
+                      },
+                      tileColor: Colors.lightGreen.shade800,
+                      title: Text(note.title),
+                      subtitle: Text(note.content),
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("Do you want to delete this note"),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Cancel"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    DatabaseHelper.deleteNote(note.id!)
+                                        .then((value) {
+                                          getNotes();
+                                        });
 
-                              Navigator.pop(context);
-                            },
-                            child: Text("Delete"),
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Delete"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      // trailing: IconButton(
+                      //   onPressed: () {},
+                      //   icon: Icon(Icons.delete),
+                      // ),
+                    );
+                  },
+                )
+              : GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  itemBuilder: (context, index) {
+                    Notes note = snapshot.data[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.cyan.shade400,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(note.id.toString()),
+                                  SizedBox(width: 30),
+                                  Text(note.title),
+                                ],
+                              ),
+                              Text(note.content),
+                            ],
                           ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                // trailing: IconButton(
-                //   onPressed: () {},
-                //   icon: Icon(Icons.delete),
-                // ),
-              );
-            },
-          );
+                        ),
+                      ),
+                    );
+                  },
+                );
         },
       ),
       floatingActionButton: FloatingActionButton(
