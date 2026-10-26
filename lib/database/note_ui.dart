@@ -5,7 +5,7 @@ import 'package:level4/database/logic.dart';
 import 'package:level4/database/note_screen.dart';
 
 class NoteUi extends StatefulWidget {
-  const new({super.key});
+  const NoteUi({super.key});
 
   @override
   State<NoteUi> createState() => _NoteUiState();
@@ -39,7 +39,7 @@ class _NoteUiState extends State<NoteUi> {
             onChanged: (value) {
               isListView = value;
               setState(() {});
-              print(isListView);
+              debugPrint(isListView.toString());
             },
           ),
         ],

@@ -5,7 +5,7 @@ class UserProvider extends ChangeNotifier {
 
   int get counter => _counter;
 
-  increaseCounter() {
+  void increaseCounter() {
     _counter++;
     notifyListeners();
   }

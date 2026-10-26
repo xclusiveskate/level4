@@ -1,12 +1,11 @@
 //where we are going to add and edit notes
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:level4/database/data.dart';
 import 'package:level4/database/logic.dart';
 
 class NoteScreen extends StatefulWidget {
   final Notes? notes;
-  const new({this.notes, super.key});
+  const NoteScreen({this.notes, super.key});
 
   @override
   State<NoteScreen> createState() => _NoteScreenState();
@@ -47,6 +46,7 @@ class _NoteScreenState extends State<NoteScreen> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () async {
+                  final navigator = Navigator.of(context);
                   if (titleController.text.isEmpty &&
                       contentController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -67,7 +67,8 @@ class _NoteScreenState extends State<NoteScreen> {
                     }
                   }
 
-                  Navigator.pop(context);
+                  if (!mounted) return;
+                  navigator.pop();
                 },
                 child: Text(widget.notes == null ? "Add Note" : "Update Note"),
               ),

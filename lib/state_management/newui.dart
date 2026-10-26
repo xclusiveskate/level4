@@ -3,7 +3,7 @@ import 'package:level4/state_management/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class NewUI extends StatefulWidget {
-  const new({super.key});
+  const NewUI({super.key});
 
   @override
   State<NewUI> createState() => _NewUIState();

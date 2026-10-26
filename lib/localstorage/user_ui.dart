@@ -5,7 +5,7 @@ import 'package:level4/localstorage/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserInformation extends StatefulWidget {
-  const new({super.key});
+  const UserInformation({super.key});
 
   @override
   State<UserInformation> createState() => _UserInformationState();
@@ -19,15 +19,15 @@ class _UserInformationState extends State<UserInformation> {
 
   List<UserModel> newData = [];
 
-  saveUser() async {
+  Future<void> saveUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String details = jsonEncode(users.map((user) => user.toMap()).toList());
     await prefs.setString('user', details);
 
-    print("User saved successfully");
+    debugPrint("User saved successfully");
   }
 
-  addUser(UserModel user) {
+  void addUser(UserModel user) {
     setState(() {
       users.add(user);
       saveUser();
@@ -35,7 +35,7 @@ class _UserInformationState extends State<UserInformation> {
     });
   }
 
-  getUser() async {
+  Future<void> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? details = prefs.getString("user");
     if (details != null) {
@@ -46,19 +46,17 @@ class _UserInformationState extends State<UserInformation> {
 
       setState(() {
         newData = mapData;
-        print(newData);
+        debugPrint(newData.toString());
       });
     }
   }
 
-  deleteData(int id) {
+  void deleteData(int id) {
     users.removeWhere((user) => user.id == id);
     saveUser();
     getUser();
     setState(() {});
   }
-
- 
 
   @override
   Widget build(BuildContext context) {

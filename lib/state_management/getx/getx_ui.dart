@@ -4,7 +4,7 @@ import 'package:level4/state_management/getx/getx.dart';
 import 'package:level4/state_management/getx/new_getx.dart';
 
 class GetxUi extends StatefulWidget {
-  const new({super.key});
+  const GetxUi({super.key});
 
   @override
   State<GetxUi> createState() => _GetxUiState();

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage extends StatefulWidget {
-  const new({super.key});
+  const LocalStorage({super.key});
 
   @override
   State<LocalStorage> createState() => _LocalStorageState();
@@ -11,53 +11,50 @@ class LocalStorage extends StatefulWidget {
 
 class _LocalStorageState extends State<LocalStorage> {
   bool isUserLoggedIn = false;
-  saveUserAge(int userAge) async {
+  Future<void> saveUserAge(int userAge) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setInt("age", userAge);
   }
 
-  getUserAge() async {
+  Future<void> getUserAge() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     int? userAge = preferences.getInt("age");
-    print("My age is $userAge");
+    debugPrint("My age is $userAge");
   }
 
-  saveUserName(String userName) async {
+  Future<void> saveUserName(String userName) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString("username", userName);
   }
 
-  getUserName() async {
+  Future<void> getUserName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? myUserName = preferences.getString("username");
-    print(myUserName);
+    debugPrint(myUserName);
   }
 
-  saveUser() async {
+  Future<void> saveUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setBool('isLoggedIn', true);
   }
 
-  getUser() async {
+  Future<void> getUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     isUserLoggedIn = preferences.getBool('isLoggedIn') ?? false;
   }
 
-  savetListOfString() async {
+  Future<void> savetListOfString() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setStringList('list', ["Ade", "Kola", "Tunde"]);
   }
 
-  getList() async {
+  Future<void> getList() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     List<String>? myList = preferences.getStringList("list");
-    print(myList);
+    debugPrint(myList.toString());
   }
-  
 
-  updateUser(int id){
-    
-  }
+  void updateUser(int id) {}
   @override
   void initState() {
     // TODO: implement initState
