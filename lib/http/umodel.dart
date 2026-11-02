@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-
-
 class UserInfo {
   final int id;
   final String name;

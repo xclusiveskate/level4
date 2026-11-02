@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:level4/http/http_ui.dart';
-import 'package:level4/routes/login.dart';
-import 'package:level4/routes/route_settings.dart';
+import 'package:level4/responsiveness/full_screen.dart';
+import 'package:level4/responsiveness/layoutbuilder.dart';
+import 'package:level4/responsiveness/mediaquery.dart';
+
 // import 'package:level4/database/note_ui.dart';
 // import 'package:level4/state_management/provider/provider_ui.dart';
 import 'package:level4/state_management/provider/user_provider.dart';
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const HttpUi(),
+      home: const FullScreenPage(),
       // initialRoute: LoginPage.routeName,
       // onGenerateRoute: (RouteSettings settings) =>
       //     RouteSetup.onGenerate(settings: settings),
