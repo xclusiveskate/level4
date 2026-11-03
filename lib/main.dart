@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:level4/http/http_ui.dart';
+import 'package:level4/media/audio.dart';
+import 'package:level4/media/joint_aud_vid.dart';
+import 'package:level4/media/video.dart';
 import 'package:level4/responsiveness/full_screen.dart';
 import 'package:level4/responsiveness/layoutbuilder.dart';
 import 'package:level4/responsiveness/mediaquery.dart';
@@ -30,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const FullScreenPage(),
+      home: const MediaHomePage(),
       // initialRoute: LoginPage.routeName,
       // onGenerateRoute: (RouteSettings settings) =>
       //     RouteSetup.onGenerate(settings: settings),
